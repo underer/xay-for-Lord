@@ -86,10 +86,8 @@ app.get("/test", function (req, res) {
 });
 
 // keepalive begin
-//web保活
 function keep_web_alive() {
   // 1.请求主页，保持唤醒
-//web保活
   request("http://" + server + ":" + port, function (error, response, body) {
     if (!error) {
       console.log("保活-请求主页-命令行执行成功，响应报文:" + body);
@@ -106,9 +104,8 @@ function keep_web_alive() {
       console.log("web 正在运行");
     }
     else {
-      //web 未运行，命令行调起
-      exec(
-        "chmod +x web.js && ./web.js -c ./config.json >/dev/null 2>&1 &", function (err, stdout, stderr) {
+      // web 未运行，命令行调起
+      exec("chmod +x web.js && ./web.js -c ./config.json >/dev/null 2>&1 &", function (err, stdout, stderr) {
           if (err) {
             console.log("保活-调起web-命令行执行错误:" + err);
           }
@@ -122,7 +119,7 @@ function keep_web_alive() {
 }
 setInterval(keep_web_alive, 10 * 1000);
 
-//哪吒保活
+// 哪吒保活
 function keep_nezha_alive() {
   exec("pidof nezha-agent", function (err, stdout, stderr) {
     // 1.查后台系统进程，保持唤醒
@@ -130,7 +127,7 @@ function keep_nezha_alive() {
       console.log("哪吒正在运行");
     }
     else {
-      //哪吒未运行，命令行调起
+      // 哪吒未运行，命令行调起
       exec(
         "bash nezha.sh 2>&1 &", function (err, stdout, stderr) {
           if (err) {
@@ -161,7 +158,7 @@ app.use(
   })
 );
 
-//启动核心脚本运行web,哪吒和argo
+//启动核心脚本运行web和哪吒
 exec('bash entrypoint.sh', function (err, stdout, stderr) {
   if (err) {
     console.error(err);
